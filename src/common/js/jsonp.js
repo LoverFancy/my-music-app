@@ -3,7 +3,7 @@ import originJsonp from 'jsonp'
 export default function jsonp(url, data, option) {
   // 如果url没有？则第一个就是？,否则第一个就是&
   url += (url.indexOf('?') < 0 ? '?' : '&') + param(data)
-// 返回Pormise 异步执行请求成功或者失败 
+  // 返回Pormise异步执行请求成功或者失败
   return new Promise((resolve, reject) => {
     originJsonp(url, option, (err, data) => {
       if (!err) {
