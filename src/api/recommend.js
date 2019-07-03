@@ -1,16 +1,16 @@
 import jsonp from 'common/js/jsonp'
 import {commonParams, options} from './config'
 import axios from 'axios'
-
+// 封装Recommend方法获取数据
 export function getRecommend() {
   const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
-
+  // Object.assign复制commonParams和第三个参数到data上
   const data = Object.assign({}, commonParams, {
     platform: 'h5',
     uin: 0,
     needNewCode: 1
   })
-
+// 返回的是Promise
   return jsonp(url, data, options)
 }
 
