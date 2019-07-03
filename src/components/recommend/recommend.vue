@@ -6,7 +6,7 @@
         <!-- 这里v-if是必要的，因为只有recmmends里有数据时才会去计算scroll内部的高度 -->
         <div v-if="recommends.length" class="slider-wrapper" ref="sliderWrapper">
           <slider>
-            <div v-for="item in recommends">
+            <div v-for="item in recommends" :key="item.index">
               <a :href="item.linkUrl">
                 <img class="needsclick" @load="loadImage" :src="item.picUrl">
               </a>
@@ -16,7 +16,7 @@
         <div class="recommend-list">
           <h1 class="list-title">热门歌单推荐</h1>
           <ul>
-            <li @click="selectItem(item)" v-for="item in discList" class="item">
+            <li @click="selectItem(item)" v-for="item in discList" class="item" :key="item.index">
               <div class="icon">
                 <img width="60" height="60" v-lazy="item.imgurl">
               </div>
