@@ -1,7 +1,7 @@
 import jsonp from 'common/js/jsonp'
 import {commonParams, options} from './config'
 import axios from 'axios'
-// 封装Recommend方法获取数据
+// 封装Recommend方法获取数据，发送jsonp请求
 export function getRecommend() {
   const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
   // Object.assign复制commonParams和第三个参数到data上
@@ -26,6 +26,7 @@ export function getDiscList() {
     needNewCode: 0,
     categoryId: 10000000,
     rnd: Math.random(),
+    // 实际请求返回json对象
     format: 'json'
   })
 
@@ -38,7 +39,9 @@ export function getDiscList() {
 
 export function getSongList(disstid) {
   const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
-
+  // Host是请求主机,Referer是请求来源
+  // 如何绕过请求头中的Host:c.y.qq.com和Referer:https://y.qq.com/portal/playlist.html,不绕过就会请求失败
+  // 使用后端server进行代理dev.server.js
   const data = Object.assign({}, commonParams, {
     disstid,
     type: 1,

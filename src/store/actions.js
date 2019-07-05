@@ -8,21 +8,27 @@ function findIndex(list, song) {
     return item.id === song.id
   })
 }
-
+// 选择歌曲播放
 export const selectPlay = function ({commit, state}, {list, index}) {
+  // 顺序播放
   commit(types.SET_SEQUENCE_LIST, list)
   if (state.mode === playMode.random) {
     let randomList = shuffle(list)
+    // 随机顺序
     commit(types.SET_PLAYLIST, randomList)
     index = findIndex(randomList, list[index])
   } else {
+    // 顺序列表
     commit(types.SET_PLAYLIST, list)
   }
+  // 当前模仿歌曲的索引
   commit(types.SET_CURRENT_INDEX, index)
+  // 打开播放器
   commit(types.SET_FULL_SCREEN, true)
+  // 播放状态
   commit(types.SET_PLAYING_STATE, true)
 }
-
+// 随机播放
 export const randomPlay = function ({commit}, {list}) {
   commit(types.SET_PLAY_MODE, playMode.random)
   commit(types.SET_SEQUENCE_LIST, list)
@@ -32,7 +38,7 @@ export const randomPlay = function ({commit}, {list}) {
   commit(types.SET_FULL_SCREEN, true)
   commit(types.SET_PLAYING_STATE, true)
 }
-
+// 插入歌曲到播放列表
 export const insertSong = function ({commit, state}, song) {
   let playlist = state.playlist.slice()
   let sequenceList = state.sequenceList.slice()
@@ -88,7 +94,7 @@ export const deleteSearchHistory = function ({commit}, query) {
 export const clearSearchHistory = function ({commit}) {
   commit(types.SET_SEARCH_HISTORY, clearSearch())
 }
-
+// 删除当前歌曲，从歌曲播放列表
 export const deleteSong = function ({commit, state}, song) {
   let playlist = state.playlist.slice()
   let sequenceList = state.sequenceList.slice()
@@ -111,7 +117,7 @@ export const deleteSong = function ({commit, state}, song) {
     commit(types.SET_PLAYING_STATE, true)
   }
 }
-
+// 删除歌曲播放列表
 export const deleteSongList = function ({commit}) {
   commit(types.SET_CURRENT_INDEX, -1)
   commit(types.SET_PLAYLIST, [])
@@ -122,7 +128,7 @@ export const deleteSongList = function ({commit}) {
 export const savePlayHistory = function ({commit}, song) {
   commit(types.SET_PLAY_HISTORY, savePlay(song))
 }
-
+// 添加到收藏
 export const saveFavoriteList = function ({commit}, song) {
   commit(types.SET_FAVORITE_LIST, saveFavorite(song))
 }

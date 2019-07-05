@@ -19,6 +19,8 @@
       bgImage() {
         return this.singer.avatar
       },
+      // this.$store.getters.xxx
+      // mapGetters 辅助函数仅仅是将 store 中的 getter 映射到局部计算属性
       ...mapGetters([
         'singer'
       ])

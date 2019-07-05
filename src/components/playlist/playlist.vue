@@ -1,4 +1,5 @@
 <template>
+  <!-- 播放列表 -->
   <transition name="list-fade">
     <div class="playlist" @click="hide" v-show="showFlag">
       <div class="list-wrapper" @click.stop>
@@ -65,6 +66,7 @@
       show() {
         this.showFlag = true
         setTimeout(() => {
+          // 重新计算滚动高度
           this.$refs.listContent.refresh()
           this.scrollToCurrent(this.currentSong)
         }, 20)

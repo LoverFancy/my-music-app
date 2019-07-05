@@ -33,6 +33,7 @@
       }
     },
     created() {
+      // 潜艇query的变化并向外派发事件传递新值
       this.$watch('query', debounce((newQuery) => {
         this.$emit('query', newQuery)
       }, 200))

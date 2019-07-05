@@ -1,4 +1,4 @@
-<template>
+    <template>
   <transition name="slide">
     <music-list :title="title" :bg-image="bgImage" :songs="songs"></music-list>
   </transition>

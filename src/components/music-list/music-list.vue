@@ -39,6 +39,7 @@
   const backdrop = prefixStyle('backdrop-filter')
 
   export default {
+    // 传入定义的mixin
     mixins: [playlistMixin],
     props: {
       bgImage: {

@@ -2,6 +2,7 @@
   <div id="app" @touchmove.prevent>
     <m-header></m-header>
     <tab></tab>
+    <!-- keep-alive可以使切换路由时进行缓存到内存 -->
     <keep-alive>
       <router-view></router-view>
     </keep-alive>

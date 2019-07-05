@@ -1,13 +1,15 @@
 import originJsonp from 'jsonp'
-// 封装jsonp 用于抓取线上数据
+// 封装jsonp 用于抓取线上数据 用promise封装做异步请求
 export default function jsonp(url, data, option) {
   // 如果url没有？则第一个就是？,否则第一个就是&
   url += (url.indexOf('?') < 0 ? '?' : '&') + param(data)
   // 返回Pormise异步执行请求成功或者失败
   return new Promise((resolve, reject) => {
+    // 调用jsonp库进行jsonp请求
     originJsonp(url, option, (err, data) => {
       if (!err) {
         resolve(data)
+        // console.log(data)
       } else {
         reject(err)
       }

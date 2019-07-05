@@ -1,7 +1,7 @@
 <template>
   <div class="song-list">
     <ul>
-      <li @click="selectItem(song, index)" class="item" v-for="(song, index) in songs">
+      <li @click="selectItem(song, index)" class="item" v-for="(song, index) in songs" :key="song.index">
         <div class="rank" v-show="rank">
           <span :class="getRankCls(index)" v-text="getRankText(index)"></span>
         </div>
@@ -33,6 +33,7 @@
       getDesc(song) {
         return `${song.singer}·${song.album}`
       },
+      // 排行1，2，3
       getRankCls(index) {
         if (index <= 2) {
           return `icon icon${index}`
@@ -40,6 +41,7 @@
           return 'text'
         }
       },
+      // 文本
       getRankText(index) {
         if (index > 2) {
           return index + 1

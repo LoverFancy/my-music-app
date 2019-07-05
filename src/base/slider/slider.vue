@@ -4,8 +4,8 @@
       <slot>
       </slot>
     </div>
-    <div class="dots">
-      <span class="dot" :class="{active: currentPageIndex === index }" v-for="(item, index) in dots"></span>
+    <div class="dots">"
+      <span class="dot" :class="{active: currentPageIndex === index }" v-for="(item, index) in dots" :key='item.index'></span>
     </div>
   </div>
 </template>
@@ -37,6 +37,8 @@
       }
     },
     mounted() {
+      // 保证dom渲染成功再进行初始化操作=>浏览器是16.777ms渲染一次
+      // 使用this.$nextTick异步函数也是可以的
       setTimeout(() => {
         this._setSliderWidth()      // 设置轮播总宽度
         this._initDots()            // 初始化下方小点
@@ -46,7 +48,7 @@
           this._play()        // 自动播放
         }
       }, 20)
-
+      // 监听 resize事件 ，重新设置轮播的宽度
       window.addEventListener('resize', () => {   // 视口改变自适应
         if (!this.slider) {
           return
@@ -75,11 +77,10 @@
         for (let i = 0; i < this.children.length; i++) {
           let child = this.children[i]
           addClass(child, 'slider-item')      // 添加样式
-
           child.style.width = sliderWidth + 'px'  // 设置宽度
           width += sliderWidth    // 轮播总宽度（实例中是5，就是5倍大小）
         }
-        if (this.loop && !isResize) {
+        if (this.loop && !isResize) { // isResize避免每次页面宽度变化都将宽度+1
           width += 2 * sliderWidth      // 如果是循环播放，在首尾各多一个，所以是本例中是（5+2）倍大小
         }
         this.$refs.sliderGroup.style.width = width + 'px'  // 设置轮播总宽度
@@ -88,9 +89,9 @@
         this.slider = new BScroll(this.$refs.slider, {
           scrollX: true,      // 横向滚动
           scrollY: false,
-          momentum: false,
+          momentum: false,   // 惯性
           snap: true,
-          snapLoop: this.loop,
+          snapLoop: this.loop, // 循环
           snapThreshold: 0.3,
           snapSpeed: 400
         })
@@ -109,6 +110,7 @@
 
         this.slider.on('beforeScrollStart', () => {   // 解决自动播放与手动滑动的冲突
           if (this.autoPlay) {
+            // 清除定时器
             clearTimeout(this.timer)
           }
         })

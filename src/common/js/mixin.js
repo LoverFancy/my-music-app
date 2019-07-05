@@ -1,7 +1,10 @@
+// 底部播放器的功能在多个组件中使用
+// mixin会在多个组件中引用其逻辑，复用底部播放器的逻辑
+
 import {mapGetters, mapMutations, mapActions} from 'vuex'
 import {playMode} from 'common/js/config'
 import {shuffle} from 'common/js/util'
-
+// 播放列表
 export const playlistMixin = {
   computed: {
     ...mapGetters([
@@ -25,7 +28,7 @@ export const playlistMixin = {
     }
   }
 }
-
+// 播放模式 混合
 export const playerMixin = {
   computed: {
     iconMode() {
@@ -89,7 +92,7 @@ export const playerMixin = {
     ])
   }
 }
-
+// 搜索
 export const searchMixin = {
   data() {
     return {

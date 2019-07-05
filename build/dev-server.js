@@ -24,9 +24,11 @@ var proxyTable = config.dev.proxyTable
 var app = express()
 
 var apiRoutes = express.Router()
-
+// 使用后端接口代理请求：不直接请求https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg，我们发送请求发到我们的
+//server端'/getDiscList',我们的服务器再去请求实际的服务器地址
 apiRoutes.get('/getDiscList', function (req, res) {
   var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
+  // 相当于通过node服务器给实际的服务器发送请求并返回数据转发到前端
   axios.get(url, {
     headers: {
       referer: 'https://c.y.qq.com/',
@@ -34,12 +36,13 @@ apiRoutes.get('/getDiscList', function (req, res) {
     },
     params: req.query
   }).then((response) => {
+    // 返回到前端
     res.json(response.data)
   }).catch((e) => {
     console.log(e)
   })
 })
-
+// 获取歌词
 apiRoutes.get('/lyric', function (req, res) {
   var url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
 
@@ -53,8 +56,10 @@ apiRoutes.get('/lyric', function (req, res) {
     var ret = response.data
     if (typeof ret === 'string') {
       var reg = /^\w+\(({[^()]+})\)$/
+      // 匹配到json字符串
       var matches = ret.match(reg)
       if (matches) {
+        // json字符串转化为json
         ret = JSON.parse(matches[1])
       }
     }

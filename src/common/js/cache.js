@@ -1,5 +1,5 @@
 import storage from 'good-storage'
-
+// localStorage的删除和插入
 const SEARCH_KEY = '__search__'
 const SEARCH_MAX_LEN = 15
 

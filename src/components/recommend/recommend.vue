@@ -8,6 +8,7 @@
           <slider>
             <div v-for="item in recommends" :key="item.index">
               <a :href="item.linkUrl">
+                <!-- 解决slider点击链接与faskclick的冲突，添加needsclick -->
                 <img class="needsclick" @load="loadImage" :src="item.picUrl">
               </a>
             </div>
@@ -66,7 +67,9 @@
         this.$refs.recommend.style.bottom = bottom
         this.$refs.scroll.refresh()
       },
-      loadImage() { // 图片加载完成后，让scroll组件重新计算高度，由于图片高度都是一样的，所以仅需调用一次
+      // 图片加载完成后，让scroll组件重新计算高度，由于图片高度都是一样的，所以仅需调用一次
+      // this.checkloaded确保只执行一次
+      loadImage() {
         if (!this.checkloaded) {
           this.checkloaded = true
           this.$refs.scroll.refresh()
@@ -80,6 +83,7 @@
       },
       _getRecommend() { // 请求轮播图片并初始化this.recommends
         getRecommend().then((res) => {
+          // console.log(res)
           if (res.code === ERR_OK) {
             this.recommends = res.data.slider
           }
@@ -87,6 +91,7 @@
       },
       _getDiscList() { // 请求推荐歌单并初始化this.discList
         getDiscList().then((res) => {
+          // console.log(res)
           if (res.code === ERR_OK) {
             this.discList = res.data.list
           }
@@ -126,15 +131,21 @@
           text-align: center
           font-size: $font-size-medium
           color: $color-theme
+          // flex布局：左边固定宽度，右边自适应
+          // 使用border-box以border为界布局
+          // align-items: center 水平居中
         .item
           display: flex
           box-sizing: border-box
           align-items: center
           padding: 0 20px 20px 20px
+          // 左右固定宽度
           .icon
             flex: 0 0 60px
             width: 60px
             padding-right: 20px
+            // 内包flex布局，竖直方向
+            // justify-content: center 垂直方向居中
           .text
             display: flex
             flex-direction: column
@@ -148,6 +159,7 @@
               color: $color-text
             .desc
               color: $color-text-d
+        // 水平垂直居中
       .loading-container
         position: absolute
         width: 100%

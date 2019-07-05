@@ -6,10 +6,10 @@
           class="listview"
           ref="listview">
     <ul>
-      <li v-for="group in data" class="list-group" ref="listGroup">
+      <li v-for="group in data" :key="group.index" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <uL>
-          <li @click="selectItem(item)" v-for="item in group.items" class="list-group-item">
+          <li @click="selectItem(item)" v-for="item in group.items" :key="item.index" class="list-group-item">
             <img class="avatar" v-lazy="item.avatar">
             <span class="name">{{item.name}}</span>
           </li>
@@ -19,7 +19,7 @@
     <div class="list-shortcut" @touchstart.stop.prevent="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove"
          @touchend.stop>
       <ul>
-        <li v-for="(item, index) in shortcutList" :data-index="index" class="item"
+        <li v-for="(item, index) in shortcutList" :key="item.index" :data-index="index" class="item"
             :class="{'current':currentIndex===index}">{{item}}
         </li>
       </ul>
@@ -51,9 +51,11 @@
     computed: {
       shortcutList() {
         return this.data.map((group) => {
+          // 去除掉热门，得到title的集合数组
           return group.title.substr(0, 1)
         })
       },
+      // 监听fixedTitle，在顶部显示区块名称
       fixedTitle() {
         if (this.scrollY > 0) {
           return ''
@@ -63,13 +65,16 @@
     },
     data() {
       return {
+        // 观测的位置
         scrollY: -1,
+        // 当前的索引值
         currentIndex: 0,
         diff: -1
       }
     },
     created() {
       this.probeType = 3
+      // 监听滚动事件
       this.listenScroll = true
       this.touch = {}
       this.listHeight = []
@@ -79,16 +84,22 @@
         this.$emit('select', item)
       },
       onShortcutTouchStart(e) {
+        // 返回当前手指的触摸元素的index
         let anchorIndex = getData(e.target, 'index')
+        // 获取手指触碰位置
         let firstTouch = e.touches[0]
+        // 记录Y方向的值
         this.touch.y1 = firstTouch.pageY
         this.touch.anchorIndex = anchorIndex
-
+        // 滚动到相应位置
         this._scrollTo(anchorIndex)
       },
       onShortcutTouchMove(e) {
+        // 获取手指触碰位置
         let firstTouch = e.touches[0]
+        // 记录Y方向的值
         this.touch.y2 = firstTouch.pageY
+        // 手指移动y轴上的偏移
         let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
         let anchorIndex = parseInt(this.touch.anchorIndex) + delta
 
@@ -98,8 +109,10 @@
         this.$refs.listview.refresh()
       },
       scroll(pos) {
+        // 从Scroll获取y的位置
         this.scrollY = pos.y
       },
+      // 计算每个group的高度
       _calculateHeight() {
         this.listHeight = []
         const list = this.$refs.listGroup
@@ -115,6 +128,7 @@
         if (!index && index !== 0) {
           return
         }
+        // 处理index边界情况
         if (index < 0) {
           index = 0
         } else if (index > this.listHeight.length - 2) {
@@ -127,6 +141,7 @@
     watch: {
       data() {
         setTimeout(() => {
+          // 延时计算高度
           this._calculateHeight()
         }, 20)
       },
@@ -150,6 +165,7 @@
         // 当滚动到底部，且-newY大于最后一个元素的上限
         this.currentIndex = listHeight.length - 2
       },
+      // 同步偏差的title高度
       diff(newVal) {
         let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
         if (this.fixedTop === fixedTop) {

@@ -1,15 +1,17 @@
 <template>
   <div class="search">
+    <!-- 搜索框组件 -->
     <div class="search-box-wrapper">
       <search-box ref="searchBox" @query="onQueryChange"></search-box>
     </div>
+    <!-- 用query判断显示热点 -->
     <div ref="shortcutWrapper" class="shortcut-wrapper" v-show="!query">
       <scroll :refreshDelay="refreshDelay" ref="shortcut" class="shortcut" :data="shortcut">
         <div>
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
             <ul>
-              <li @click="addQuery(item.k)" class="item" v-for="item in hotKey">
+              <li @click="addQuery(item.k)" class="item" v-for="item in hotKey" :key="item.index">
                 <span>{{item.k}}</span>
               </li>
             </ul>
@@ -21,11 +23,13 @@
                 <i class="icon-clear"></i>
               </span>
             </h1>
+            <!-- 搜索列表组件 -->
             <search-list @delete="deleteSearchHistory" @select="addQuery" :searches="searchHistory"></search-list>
           </div>
         </div>
       </scroll>
     </div>
+    <!-- 用query判断显示搜索结果 -->
     <div class="search-result" v-show="query" ref="searchResult">
       <suggest @listScroll="blurInput" @select="saveSearch" ref="suggest" :query="query"></suggest>
     </div>

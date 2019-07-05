@@ -12,7 +12,7 @@ export function getTopList() {
 
   return jsonp(url, data, options)
 }
-
+// 歌曲排行详情页
 export function getMusicList(topid) {
   const url = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg'
 

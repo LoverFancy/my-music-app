@@ -8,7 +8,7 @@
           @beforeScroll="listScroll"
   >
     <ul class="suggest-list">
-      <li @click="selectItem(item)" class="suggest-item" v-for="item in result">
+      <li @click="selectItem(item)" class="suggest-item" v-for="item in result" :key="item.index">
         <div class="icon">
           <i :class="getIconCls(item)"></i>
         </div>
@@ -18,6 +18,7 @@
       </li>
       <loading v-show="hasMore" title=""></loading>
     </ul>
+    <!-- 无结果的显示 -->
     <div v-show="!hasMore && !result.length" class="no-result-wrapper">
       <no-result title="抱歉，暂无搜索结果"></no-result>
     </div>
@@ -135,6 +136,7 @@
         })
         return ret
       },
+      // 是否有更多数据
       _checkMore(data) {
         const song = data.song
         if (!song.list.length || (song.curnum + song.curpage * perpage) > song.totalnum) {
@@ -148,6 +150,7 @@
         'insertSong'
       ])
     },
+    // 监听query的变化
     watch: {
       query(newQuery) {
         this.search(newQuery)

@@ -36,15 +36,18 @@
         this.$router.push({
           path: `/singer/${singer.id}`
         })
+        // 跳转后获取当前singer的数据
         this.setSinger(singer)
       },
       _getSingerList() {
         getSingerList().then((res) => {
           if (res.code === ERR_OK) {
+            // 获取singer序列化后的数据
             this.singers = this._normalizeSinger(res.data.list)
           }
         })
       },
+      // 序列化歌手数据
       _normalizeSinger(list) {
         let map = {
           hot: {
@@ -71,7 +74,8 @@
             id: item.Fsinger_mid
           }))
         })
-        // 为了得到有序列表，我们需要处理 map
+        // console.log(map)
+        // 为了得到有序列表，我们需要处理 map,将map转化为有序列表
         let ret = []
         let hot = []
         for (let key in map) {
@@ -82,11 +86,13 @@
             hot.push(val)
           }
         }
+        // 按字母升序排列
         ret.sort((a, b) => {
           return a.title.charCodeAt(0) - b.title.charCodeAt(0)
         })
         return hot.concat(ret)
       },
+      // 实际是调用了this.$store.commit('SET_SINGER')
       ...mapMutations({
         setSinger: 'SET_SINGER'
       })

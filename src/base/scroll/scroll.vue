@@ -17,6 +17,7 @@
         type: Boolean,
         default: true
       },
+      // 监听滚动事件
       listenScroll: {   // 是否派发滚动事件
         type: Boolean,
         default: false
@@ -54,9 +55,11 @@
         })
 
         if (this.listenScroll) {      // 如果有监听就触发一个事件并把相关参数传出去
-          let me = this
+          let _this = this
+          // 监听scroll的滚动事件
           this.scroll.on('scroll', (pos) => {
-            me.$emit('scroll', pos)
+            // 派发事件
+            _this.$emit('scroll', pos)
           })
         }
 
